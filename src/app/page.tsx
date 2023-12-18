@@ -11,8 +11,8 @@
           key={`${row}-${col}`}
           style={{
             backgroundColor: squareColor,
-            width: '50px',
-            height: '50px',
+            width: '75px',
+            height: '75px',
             display: 'inline-block', // Add display property to show squares in a row
           }}
         ></div>
@@ -24,7 +24,7 @@
       for (let col = 0; col < boardSize; col++) {
         squares.push(renderSquare(row, col));
       }
-      return <div key={row}>{squares}</div>;
+      return <div key={row} className = "row">{squares}</div>;
     };
 
     const renderBoard = () => {
