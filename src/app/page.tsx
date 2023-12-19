@@ -1,4 +1,5 @@
   import React from 'react';
+  import Piece from './components/piece';
 
   export default function ChessBoard() {
     const boardSize = 8;
@@ -15,7 +16,9 @@
             height: '75px',
             display: 'inline-block', // Add display property to show squares in a row
           }}
-        ></div>
+        >
+          <Piece pieceType='r' pieceColor='w' />
+        </div>
       );
     };
 
