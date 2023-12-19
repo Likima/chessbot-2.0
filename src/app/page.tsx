@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import Piece from './components/piece';
 
-type PieceStart = [color: 'w' | 'b', type: 'r' | 'n' | 'b' | 'q' | 'k' | 'p']
+type PieceStart = [color: 'b' | 'w', type: 'r' | 'n' | 'b' | 'q' | 'k' | 'p']
 
 function setup(){
   const piece_types = ["rnbqkbnr", "pppppppp"];
   let board: Record<string, PieceStart> = {};
-  ['w','b'].flatMap((color) => {
+  ['b','w'].flatMap((color) => {
     const row = color === 'w' ? 1 : 8;
     const pawn_row = color === 'w' ? 2 : 7;
     const pieces = piece_types.map((piece_type) => piece_type.split(''));
@@ -36,7 +36,7 @@ export default function ChessBoard() {
       <div className="grid grid-cols-8 aspect-square">{
         [...Array(boardSize).keys()].map((y: number) => 
           [...Array(boardSize).keys()].map((x: number) => {
-              const piece = board[`${x + 1}${y + 1}`];
+              const piece = board[`${x + 1}${boardSize - y}`]; // Flip the y coordinate
               return <div key={`${x}${y}`} className={`${(x + y) % 2 ? 
               "bg-white" : "bg-[#0000FF]"} aspect-square w-10 md:w-16 border-4 border-transparent hover:border-black`}
               >
@@ -49,4 +49,3 @@ export default function ChessBoard() {
     </div>
   </div>
 }
-
