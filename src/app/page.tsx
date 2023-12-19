@@ -1,42 +1,52 @@
-  import React from 'react';
-  import Piece from './components/piece';
+'use client'
 
-  export default function ChessBoard() {
-    const boardSize = 8;
+import React, { useEffect, useState } from 'react';
+import Piece from './components/piece';
 
-    const renderSquare = (row: number, col: number) => {
-      const isEvenSquare = (row + col) % 2 === 0;
-      const squareColor = isEvenSquare ? 'white' : 'blue'; // Set the square color to blue and white
-      return (
-        <div
-          key={`${row}-${col}`}
-          style={{
-            backgroundColor: squareColor,
-            width: '75px',
-            height: '75px',
-            display: 'inline-block', // Add display property to show squares in a row
-          }}
-        >
-          <Piece pieceType='r' pieceColor='w' />
-        </div>
-      );
-    };
+type PieceStart = [color: 'w' | 'b', type: 'r' | 'n' | 'b' | 'q' | 'k' | 'p']
 
-    const renderRow = (row: number) => {
-      const squares = [];
-      for (let col = 0; col < boardSize; col++) {
-        squares.push(renderSquare(row, col));
+function setup(){
+  const piece_types = ["rnbqkbnr", "pppppppp"];
+  let board: Record<string, PieceStart> = {};
+  ['w','b'].flatMap((color) => {
+    const row = color === 'w' ? 1 : 8;
+    const pawn_row = color === 'w' ? 2 : 7;
+    const pieces = piece_types.map((piece_type) => piece_type.split(''));
+    pieces.forEach((piece_type, i) => {
+      piece_type.forEach((piece, j) => {
+        const x = j + 1;
+        const y = i === 0 ? row : pawn_row;
+        board[`${x}${y}`] = [color, piece] as PieceStart;
+      })
+    })
+  })
+  console.log(board)
+  return board
+}
+
+export default function ChessBoard() {
+  const boardSize = 8;
+  const [board, setBoard] = useState<Record<string, PieceStart>>({});
+
+  useEffect(() => {
+    setBoard(setup());
+  }, []);
+
+  return <div className="grid place-items-center w-full min-h-screen" >
+      <div className="grid grid-cols-8 aspect-square">{
+        [...Array(boardSize).keys()].map((y: number) => 
+          [...Array(boardSize).keys()].map((x: number) => {
+              const piece = board[`${x + 1}${y + 1}`];
+              return <div key={`${x}${y}`} className={`${(x + y) % 2 ? 
+              "bg-white" : "bg-[#0000FF]"} aspect-square w-10 md:w-16 border-4 border-transparent hover:border-black`}
+              >
+                {piece && <Piece pieceType={piece[1]} pieceColor={piece[0]} />}
+              </div>
+            }
+          )
+        )
       }
-      return <div key={row} className = "row">{squares}</div>;
-    };
+    </div>
+  </div>
+}
 
-    const renderBoard = () => {
-      const rows = [];
-      for (let row = 0; row < boardSize; row++) {
-        rows.push(renderRow(row));
-      }
-      return rows;
-    };
-
-    return <div>{renderBoard()}</div>;
-  }

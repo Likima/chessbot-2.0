@@ -30,7 +30,15 @@ export default function Piece({pieceType, pieceColor}: PieceProps) {
             console.log("Invalid piece type");
             break;
     }
+    
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        console.log("Piece clicked");
+    }
+
     return (
-        <img src = {`/${pieceName}.png`} alt = {pieceName} />
+        <button className="w-full h-full grid place-items-center hover:scale-[105%] ease-in-out transition-all duration-300" onClick={handleClick}>
+            <img src = {`/${pieceName}.png`} alt={pieceName} className="mr-[4px]"/>
+        </button>
     );
 }
