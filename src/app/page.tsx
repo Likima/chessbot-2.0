@@ -5,6 +5,22 @@ import Piece from "./components/piece";
 
 type PieceStart = [color: "b" | "w", type: "r" | "n" | "b" | "q" | "k" | "p"];
 
+function printBoard(board: Record<string, PieceStart>) {
+  const boardSize = 8;
+  for (let y = boardSize; y >= 1; y--) {
+    let row = "";
+    for (let x = 1; x <= boardSize; x++) {
+      const piece = board[`${x}${y}`];
+      if (piece) {
+        row += `${piece[0]}${piece[1]} `;
+      } else {
+        row += "-- ";
+      }
+    }
+    console.log(row);
+  }
+}
+
 function setup() {
   const piece_types = ["rnbqkbnr", "pppppppp"];
   let board: Record<string, PieceStart> = {};
@@ -20,7 +36,6 @@ function setup() {
       });
     });
   });
-  console.log(board);
   return board;
 }
 
@@ -70,7 +85,7 @@ export default function ChessBoard() {
                   <Piece
                     pieceType={piece[1]}
                     pieceColor={piece[0]}
-                    // move = {move}
+                    move = {move}
                     x={x}
                     y={y}
                   />
