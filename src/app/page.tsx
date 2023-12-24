@@ -46,6 +46,7 @@ function useBoard() {
     // toolkit for each piece
     const move = (newX: number, newY: number) => {
       setBoard((prevBoard) => {
+        if(newX === x && newY === y) return prevBoard;
         const newBoard = { ...prevBoard };
         const piece = newBoard[`${x + 1}${8 - y}`];
         delete newBoard[`${x + 1}${8 - y}`];
